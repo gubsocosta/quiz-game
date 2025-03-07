@@ -1,17 +1,13 @@
 <template>
   <div>
-    <h1 v-html="this.question"></h1>
-    <input id="" name="options" type="radio">
-    <label>Steve Rogers</label> <br>
+    <template v-if="this.question">
+      <h1 v-html="this.question"></h1>
 
-    <input id="" name="options" type="radio">
-    <label>Clark Kent</label> <br>
-
-    <input id="" name="options" type="radio">
-    <label>Bruce Wayne</label> <br>
-
-    <input id="" name="options" type="radio">
-    <label>Tony Stark</label> <br>
+      <template v-for="(answer,index) in this.answers" :key="index">
+        <input type="radio" name="options" value="answer">
+        <label v-html="answer"></label> <br>
+      </template>
+    </template>
 
     <button class="send" type="button">Send</button>
   </div>
