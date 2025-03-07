@@ -11,7 +11,7 @@
           name="options"
           type="radio"
         >
-        <label v-html="answer"></label><br>
+        <label v-html="answer" for="options"></label><br>
       </template>
 
       <button
@@ -24,13 +24,17 @@
       </button>
 
       <section class="result" v-if="this.answerSubmitted">
-        <h4 v-if="this.chosenAnswer === this.correctAnswer">
-          &#9989; Congratulations, the answer "{{this.chosenAnswer}}" is correct
+        <h4
+          v-if="this.chosenAnswer === this.correctAnswer"
+          v-html="'&#9989; Congratulations, the answer &rdquo;' + this.chosenAnswer + '&ldquo; is correct'"
+        >
         </h4>
-        <h4 v-else>
-          &#10060; I'm sorry, you picked the wrong answer. The correct is "{{this.chosenAnswer}}"
+        <h4
+          v-else
+          v-html="'&#10060; I\'m sorry, you picked the wrong answer. The correct is &rdquo;' + this.chosenAnswer + '&ldquo;'"
+        >
         </h4>
-        <button class="send" type="button">Next question</button>
+        <button class="send" type="button" @click="getNewQuestion">Next question</button>
       </section>
     </template>
   </div>
@@ -72,18 +76,26 @@ export default {
       this.chosenAnswer === this.correctAnswer
         ? console.log('You got it right')
         : console.log('You got it wrong');
+    },
+
+    getNewQuestion() {
+      this.answerSubmitted = false;
+      this.chosenAnswer = undefined;
+      this.question = undefined;
+
+      this.axios
+        .get('https://opentdb.com/api.php?amount=1&category=11')
+        .then((response) => {
+          const results = response.data.results[0];
+
+          this.question = results.question;
+          this.incorrectAnswers = results.incorrect_answers;
+          this.correctAnswer = results.correct_answer;
+        });
     }
   },
   created() {
-    this.axios
-      .get('https://opentdb.com/api.php?amount=1&category=11')
-      .then((response) => {
-        const results = response.data.results[0];
-
-        this.question = results.question;
-        this.incorrectAnswers = results.incorrect_answers;
-        this.correctAnswer = results.correct_answer;
-      })
+    this.getNewQuestion();
   }
 }
 </script>
