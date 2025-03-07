@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h1>Qual é o nome verdadeiro do Homem de Ferro nos quadrinhos e no MCU?</h1>
-    <input type="radio" name="options" id="">
+    <h1 v-html="this.question"></h1>
+    <input id="" name="options" type="radio">
     <label>Steve Rogers</label> <br>
 
-    <input type="radio" name="options" id="">
+    <input id="" name="options" type="radio">
     <label>Clark Kent</label> <br>
 
-    <input type="radio" name="options" id="">
+    <input id="" name="options" type="radio">
     <label>Bruce Wayne</label> <br>
 
-    <input type="radio" name="options" id="">
+    <input id="" name="options" type="radio">
     <label>Tony Stark</label> <br>
 
     <button class="send" type="button">Send</button>
@@ -21,10 +21,37 @@
 
 export default {
   name: 'App',
-  components: {}
+  components: {},
+  data() {
+    return {
+      question: undefined,
+      incorrectAnswers: undefined,
+      correctAnswer: undefined,
+    }
+  },
+  computed: {
+    answers() {
+      const answers = [...this.incorrectAnswers];
+      const position = Math.round(Math.random() * answers.length);
+
+      answers.splice(position,0, this.correctAnswer);
+
+      return answers;
+    }
+  },
+  created() {
+    this.axios
+      .get('https://opentdb.com/api.php?amount=1&category=11')
+      .then((response) => {
+        const results = response.data.results[0];
+
+        this.question = results.question;
+        this.incorrectAnswers = results.incorrect_answers;
+        this.correctAnswer = results.correct_answer;
+      })
+  }
 }
 </script>
-
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
