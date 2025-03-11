@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ScoreBoard :winCount="this.winCount" :loseCount="this.loseCount"/>
     <template v-if="this.question">
       <h1 v-html="this.question"></h1>
 
@@ -10,8 +11,9 @@
           :disabled="this.answerSubmitted"
           name="options"
           type="radio"
+          :id="index"
         >
-        <label v-html="answer" for="options"></label><br>
+        <label :for="index" v-html="answer"></label><br>
       </template>
 
       <button
@@ -41,17 +43,20 @@
 </template>
 
 <script>
+import ScoreBoard from "@/components/ScoreBoard.vue";
 
 export default {
   name: 'App',
-  components: {},
+  components: {ScoreBoard},
   data() {
     return {
       question: undefined,
       incorrectAnswers: undefined,
       correctAnswer: undefined,
       chosenAnswer: undefined,
-      answerSubmitted: false
+      answerSubmitted: false,
+      winCount: 0,
+      loseCount: 0
     }
   },
   computed: {
@@ -74,8 +79,8 @@ export default {
       this.answerSubmitted = true;
 
       this.chosenAnswer === this.correctAnswer
-        ? console.log('You got it right')
-        : console.log('You got it wrong');
+        ? this.winCount++
+        : this.loseCount++;
     },
 
     getNewQuestion() {
