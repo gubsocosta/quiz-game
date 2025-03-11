@@ -31,7 +31,7 @@
         </h4>
         <h4
           v-else
-          v-html="'&#10060; I\'m sorry, you picked the wrong answer. The correct is &rdquo;' + this.chosenAnswer + '&ldquo;'"
+          v-html="'&#10060; I\'m sorry, you picked the wrong answer. The correct is &rdquo;' + this.correctAnswer + '&ldquo;'"
         >
         </h4>
         <button class="send" type="button" @click="getNewQuestion">Next question</button>
