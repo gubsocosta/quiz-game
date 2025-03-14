@@ -1,4 +1,4 @@
-# quiz Game
+# Quiz Game
 
 ## Description
 This project is a **Quiz Game** developed as part of the course **"Vue JS 3 Complete with Composition API, Vuex & Vue Router"**.  
